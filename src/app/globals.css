@@ -1,26 +1,93 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0e17;
+  --surface: #12161f;
+  --surface-raised: #171c27;
+  --text: #e8eaf0;
+  --text-secondary: #8b92a5;
+  --text-muted: #565e70;
+  --accent-1: #7c5cfc;
+  --accent-2: #22d3ee;
+  --gradient: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+  --gain: #22c55e;
+  --loss: #ef4444;
+  --line: #232838;
 }
 
 @theme inline {
   --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-text: var(--text);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-accent-1: var(--accent-1);
+  --color-accent-2: var(--accent-2);
+  --color-gradient: var(--gradient);
+  --color-gain: var(--gain);
+  --color-loss: var(--loss);
+  --color-line: var(--line);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-display: var(--font-space-grotesk);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
+  color: var(--text);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@utility gradient-text {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility gradient-bg {
+  background: var(--gradient);
+}
+
+@utility arrow {
+  &::after {
+    content: "\2192";
+    color: var(--accent-2);
+    padding-left: 4px;
+  }
+}
+
+@utility glow-button {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -150%;
+    background: conic-gradient(
+      var(--accent-1),
+      var(--accent-2),
+      var(--accent-1)
+    );
+
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: -2;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    background: var(--surface);
+    border-radius: inherit;
+    z-index: -1;
+  }
+
+  &:hover::before {
+    opacity: 1;
+  }
 }
