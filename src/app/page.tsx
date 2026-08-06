@@ -1,10 +1,11 @@
+import Image from "next/image";
+
 export default function Home() {
   return (
     <main className="font-display container mx-auto flex max-w-3xl flex-col p-10 text-center">
-      <h2 className="pb-20">
-        <span className="font-bold">chain</span>
-        <span className="gradient-text font-bold">trace</span>
-      </h2>
+      <div className="mx-auto mb-10">
+        <Image src="/logo-2.webp" alt="Hero" width={300} height={150} />
+      </div>
       <div className="mx-auto max-w-2xl pb-10 text-center">
         <h2 className="text-accent-2 font-mono text-sm uppercase">
           On-chain wallet analysis

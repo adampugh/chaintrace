@@ -11,7 +11,9 @@
   --accent-2: #22d3ee;
   --gradient: linear-gradient(135deg, var(--accent-1), var(--accent-2));
   --gain: #22c55e;
+  --gain-opacity: rgba(34, 197, 94, 0.2);
   --loss: #ef4444;
+  --loss-opacity: rgba(239, 68, 68, 0.2);
   --line: #232838;
 }
 
@@ -26,7 +28,9 @@
   --color-accent-2: var(--accent-2);
   --color-gradient: var(--gradient);
   --color-gain: var(--gain);
+  --color-gain-opacity: var(--gain-opacity);
   --color-loss: var(--loss);
+  --color-loss-opacity: var(--loss-opacity);
   --color-line: var(--line);
 
   --font-display: var(--font-space-grotesk);
@@ -47,7 +51,31 @@ body {
 }
 
 @utility gradient-bg {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   background: var(--gradient);
+
+  color: var(--surface);
+  transition: color 0.3s ease;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--accent-1);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+  }
+
+  &:hover {
+    color: var(--text);
+  }
+
+  &:hover::before {
+    opacity: 1;
+  }
 }
 
 @utility arrow {
