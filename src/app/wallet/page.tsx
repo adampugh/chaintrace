@@ -7,13 +7,16 @@ import PortfolioCompositionChart from "../components/PortfolioCompositionChart";
 import GasSpendChart from "../components/GasSpendChart";
 import TopProtocolsChart from "../components/TopProtocolsChart";
 import TransactionTable from "../components/TransactionTable";
+import AIAnalysis from "../components/AIAnalysis";
 
 export default function Wallet() {
   return (
-    <main className="font-display container mx-auto flex max-w-6xl flex-col p-10 text-center">
-      <div className="mb-10">
-        <nav className="mb-10 flex place-content-between">
-          <Image src="/logo-2.webp" alt="Hero" width={150} height={100} />
+    <main className="font-display container mx-auto flex max-w-6xl flex-col p-6 text-center">
+      <div className="mb-6">
+        <nav className="mb-6 flex place-content-between">
+          <Link href="/">
+            <Image src="/logo-2.webp" alt="Hero" width={150} height={100} />
+          </Link>
           <Link
             href="/"
             className="text-text-secondary arrow font-mono text-sm"
@@ -23,7 +26,10 @@ export default function Wallet() {
         </nav>
         <Header />
       </div>
-      <OverTimeChart />
+      <div className="flex gap-4">
+        <OverTimeChart />
+        <AIAnalysis />
+      </div>
       <div className="my-4 grid grid-cols-1 gap-4 md:grid-cols-2">
         <PortfolioCompositionChart />
         <GasSpendChart />

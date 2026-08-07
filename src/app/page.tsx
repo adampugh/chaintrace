@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -37,12 +38,12 @@ export default function Home() {
         Works with any public wallet · read-only, nothing is stored
       </p>
       <div className="mx-auto mt-8 flex gap-4">
-        <a
-          href=""
+        <Link
+          href="/wallet"
           className="glow-button font-display text-text-secondary border-line bg-surface rounded-4xl border p-2 px-4 text-sm"
         >
           <span className="arrow relative z-10">Try a DeFi power user</span>
-        </a>
+        </Link>
         <a
           href=""
           className="glow-button font-display text-text-secondary border-line bg-surface rounded-4xl border p-2 px-4 text-sm"

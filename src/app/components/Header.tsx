@@ -7,7 +7,7 @@ const data = {
 
 export default function Header() {
   return (
-    <header className="border-line flex place-content-between border-b pb-10">
+    <header className="border-line flex place-content-between border-b pb-4">
       <div>
         <p className="text-left">
           <span className="border-line text-text-secondary mr-4 rounded-xl border p-2 px-4 text-sm">
