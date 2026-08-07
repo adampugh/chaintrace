@@ -15,6 +15,8 @@
   --loss: #ef4444;
   --loss-opacity: rgba(239, 68, 68, 0.2);
   --line: #232838;
+  --gradient-2: linear-gradient(135deg, #7c5cfc, #3d4358);
+  --gradient-3: linear-gradient(135deg, #7c5cfc, #22d3ee);
 }
 
 @theme inline {
@@ -75,6 +77,20 @@ body {
 
   &:hover::before {
     opacity: 1;
+  }
+}
+
+@utility gradient-articles {
+  > :nth-child(even) {
+    background: var(--gradient-2);
+  }
+
+  > :nth-child(odd) {
+    background: var(--gradient-3);
+  }
+
+  span {
+    background: rgba(0, 0, 0, 0.2);
   }
 }
 

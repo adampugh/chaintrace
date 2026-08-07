@@ -1,4 +1,5 @@
 import Image from "next/image";
+import NoData from "./NoData";
 
 export type NftType = {
   tokenId: number;
@@ -57,22 +58,36 @@ export const mockNfts: NftType[] = [
 
 export default function NFTGrid() {
   return (
-    <div className="border-line text-align w-fill flex flex-col border p-8">
+    <div className="border-line text-align w-fill bg-surface flex flex-col rounded-xl border p-8">
       <h2 className="text-text-secondary mb-8 text-left font-mono text-sm uppercase">
         NFT Holdings
       </h2>
-      <div className="grid grid-cols-3">
-        {mockNfts.map((nft) => (
-          <article key={nft.tokenId} className="border-line border">
-            {nft.image ? (
-              <Image src={nft.image} alt={nft.name} width={150} height={150} />
-            ) : (
-              <></>
-            )}
-            <span>#{nft.tokenId}</span>
-          </article>
-        ))}
-      </div>
+      {mockNfts?.length ? (
+        <div className="gradient-articles grid grid-cols-3 gap-4">
+          {mockNfts.slice(0, 6).map((nft) => (
+            <article
+              key={nft.tokenId}
+              className="border-line relative h-38 w-38 rounded-xl border"
+            >
+              {nft.image ? (
+                <Image
+                  src={nft.image}
+                  alt={nft.name}
+                  width={150}
+                  height={150}
+                />
+              ) : (
+                <></>
+              )}
+              <span className="absolute bottom-2 left-2 rounded-md p-1 text-xs">
+                #{nft.tokenId}
+              </span>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <NoData />
+      )}
     </div>
   );
 }

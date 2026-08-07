@@ -1,4 +1,5 @@
 "use client";
+import NoData from "./NoData";
 
 import {
   Area,
@@ -33,28 +34,38 @@ export default function OverTimeChart() {
         </h2>
         <p className="text-text-secondary text-sm uppercase">1Y</p>
       </div>
-      <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={data}>
-          <defs>
-            <linearGradient id="portfolioGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#6D5EF9" stopOpacity={0.35} />
-              <stop offset="100%" stopColor="#6D5EF9" stopOpacity={0} />
-            </linearGradient>
-          </defs>
+      {data?.length ? (
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={data}>
+            <defs>
+              <linearGradient
+                id="portfolioGradient"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
+                <stop offset="0%" stopColor="#6D5EF9" stopOpacity={0.35} />
+                <stop offset="100%" stopColor="#6D5EF9" stopOpacity={0} />
+              </linearGradient>
+            </defs>
 
-          <XAxis hide />
-          <YAxis hide />
-          <Tooltip />
+            <XAxis hide />
+            <YAxis hide />
+            <Tooltip />
 
-          <Area
-            type="monotone"
-            dataKey="value"
-            stroke="#4F8DFF"
-            strokeWidth={3}
-            fill="url(#portfolioGradient)"
-          />
-        </AreaChart>
-      </ResponsiveContainer>
+            <Area
+              type="monotone"
+              dataKey="value"
+              stroke="#4F8DFF"
+              strokeWidth={3}
+              fill="url(#portfolioGradient)"
+            />
+          </AreaChart>
+        </ResponsiveContainer>
+      ) : (
+        <NoData />
+      )}
     </div>
   );
 }
