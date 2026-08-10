@@ -1,5 +1,3 @@
-// const BASE_URL = `https://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`;
-
 import { cacheLife } from "next/cache";
 
 export type AlchemyToken = {

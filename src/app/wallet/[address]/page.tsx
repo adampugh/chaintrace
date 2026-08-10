@@ -50,7 +50,9 @@ export default function Wallet({
         </Link>
       </nav>
       <Suspense
-        fallback={<p className="text-text-secondary mb-6">Loading wallet…</p>}
+        fallback={
+          <p className="text-text-secondary mt-10 mb-6">Loading wallet…</p>
+        }
       >
         <WalletContent params={params} />
       </Suspense>
