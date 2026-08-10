@@ -2,30 +2,11 @@
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import NoData from "./NoData";
 
-const data = [
-  {
-    name: "DeFi tokens",
-    value: 38,
-    color: "#7857FF",
-  },
-  {
-    name: "Stablecoins",
-    value: 25,
-    color: "#28C6E8",
-  },
-  {
-    name: "NFTs",
-    value: 21,
-    color: "#474E70",
-  },
-  {
-    name: "Other",
-    value: 16,
-    color: "#232A42",
-  },
-];
-
-export default function PortfolioCompositionChart() {
+export default function PortfolioCompositionChart({
+  data,
+}: {
+  data: { name: string; value: number; color: string }[];
+}) {
   return (
     <div className="border-line text-align w-fill bg-surface flex flex-col rounded-xl border p-8">
       <h2 className="text-text-secondary mb-8 text-left font-mono text-sm uppercase">
@@ -67,7 +48,7 @@ export default function PortfolioCompositionChart() {
                   <span className="text-text-secondary">{item.name}</span>
                 </div>
 
-                <span className="font-semibold">{item.value}%</span>
+                <span className="font-semibold">{Math.round(item.value)}%</span>
               </div>
             ))}
           </div>

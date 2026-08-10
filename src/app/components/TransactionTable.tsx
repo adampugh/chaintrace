@@ -8,44 +8,17 @@ export type Transaction = {
   timestamp: string;
 };
 
-export const transactions: Transaction[] = [
-  {
-    id: "1",
-    type: "Swap",
-    protocol: "Uniswap",
-    amount: "2.1 ETH → 6,840 USDC",
-    timestamp: "2h ago",
-  },
-  {
-    id: "2",
-    type: "Transfer",
-    protocol: null,
-    amount: "+0.8 ETH",
-    timestamp: "6h ago",
-  },
-  {
-    id: "3",
-    type: "Approve",
-    protocol: "Aave",
-    amount: "Unlimited USDC",
-    timestamp: "1d ago",
-  },
-  {
-    id: "4",
-    type: "Swap",
-    protocol: "1inch",
-    amount: "1,200 USDC → 0.37 ETH",
-    timestamp: "2d ago",
-  },
-];
-
 const badgeColours = {
   Swap: "bg-violet-500/15 text-violet-400",
   Transfer: "bg-emerald-500/15 text-emerald-400",
   Approve: "bg-red-500/15 text-red-400",
 };
 
-export default function TransactionTable() {
+export default function TransactionTable({
+  transactions,
+}: {
+  transactions: Transaction[];
+}) {
   return (
     <div className="border-line text-align w-fill bg-surface flex flex-col rounded-xl border p-8">
       <h2 className="text-text-secondary mb-8 text-left font-mono text-sm uppercase">

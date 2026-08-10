@@ -1,25 +1,10 @@
 import NoData from "./NoData";
 
-const protocols = [
-  {
-    name: "Uniswap",
-    interactions: 142,
-  },
-  {
-    name: "Aave",
-    interactions: 88,
-  },
-  {
-    name: "Blur",
-    interactions: 51,
-  },
-  {
-    name: "Lido",
-    interactions: 27,
-  },
-];
-
-export default function TopProtocolsChart() {
+export default function TopProtocolsChart({
+  protocols,
+}: {
+  protocols: { name: string; interactions: number }[];
+}) {
   const maxInteractions = Math.max(...protocols.map((p) => p.interactions));
   return (
     <div className="border-line text-align w-fill font-display bg-surface flex flex-col rounded-xl border p-8">
