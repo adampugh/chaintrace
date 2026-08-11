@@ -1,4 +1,5 @@
 import { cacheLife } from "next/cache";
+import { z } from "zod";
 import type { Transaction } from "../components/TransactionTable";
 import { isSpamToken } from "./spam";
 
@@ -20,19 +21,24 @@ const PROTOCOL_CONTRACTS: Record<string, string> = {
 
 const DEX_PROTOCOLS = new Set(["Uniswap"]);
 
-type AlchemyTransfer = {
-  uniqueId: string;
-  to: string | null;
-  value: number | null;
-  asset: string | null;
-  category: "external" | "internal" | "erc20" | "erc721" | "erc1155";
-  erc721TokenId: string | null;
-  metadata: { blockTimestamp: string } | null;
-};
+const AlchemyTransferSchema = z.object({
+  uniqueId: z.string(),
+  to: z.string().nullable(),
+  value: z.number().nullable(),
+  asset: z.string().nullable(),
+  category: z.enum(["external", "internal", "erc20", "erc721", "erc1155"]),
+  erc721TokenId: z.string().nullable(),
+  metadata: z.object({ blockTimestamp: z.string() }).nullable(),
+});
 
-type AlchemyTransfersResponse = {
-  result: { transfers: AlchemyTransfer[]; pageKey?: string };
-};
+type AlchemyTransfer = z.infer<typeof AlchemyTransferSchema>;
+
+const AlchemyTransfersResponseSchema = z.object({
+  result: z.object({
+    transfers: z.array(AlchemyTransferSchema),
+    pageKey: z.string().optional(),
+  }),
+});
 
 export type ProtocolInteraction = { name: string; interactions: number };
 
@@ -78,7 +84,7 @@ export async function getWalletTransfers(
     throw new Error(`Alchemy transfers request failed: ${res.status}`);
   }
 
-  const json: AlchemyTransfersResponse = await res.json();
+  const json = AlchemyTransfersResponseSchema.parse(await res.json());
   return json.result.transfers;
 }
 

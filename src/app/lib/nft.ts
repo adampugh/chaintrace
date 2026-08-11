@@ -1,27 +1,31 @@
 import { cacheLife } from "next/cache";
+import { z } from "zod";
 import type { NftType } from "../components/NFTGrid";
 
-type AlchemyNft = {
-  tokenId: string;
-  balance: string;
-  name: string | null;
-  contract: {
-    name: string | null;
-    isSpam: boolean;
-    openSeaMetadata: { imageUrl: string | null; floorPrice: number | null };
-  };
-  image: {
-    cachedUrl: string | null;
-    thumbnailUrl: string | null;
-  };
-};
+const AlchemyNftSchema = z.object({
+  tokenId: z.string(),
+  balance: z.string(),
+  name: z.string().nullable(),
+  contract: z.object({
+    name: z.string().nullable(),
+    isSpam: z.boolean(),
+    openSeaMetadata: z.object({
+      imageUrl: z.string().nullable(),
+      floorPrice: z.number().nullable(),
+    }),
+  }),
+  image: z.object({
+    cachedUrl: z.string().nullable(),
+    thumbnailUrl: z.string().nullable(),
+  }),
+});
 
-type AlchemyNftsResponse = {
-  data: {
-    ownedNfts: AlchemyNft[];
-    pageKey: string | null;
-  };
-};
+const AlchemyNftsResponseSchema = z.object({
+  data: z.object({
+    ownedNfts: z.array(AlchemyNftSchema),
+    pageKey: z.string().nullable(),
+  }),
+});
 
 export type NftSummary = {
   items: NftType[];
@@ -73,7 +77,7 @@ export async function getWalletNftSummary(
 
     if (!res.ok) throw new Error(`Alchemy NFT request failed: ${res.status}`);
 
-    const json: AlchemyNftsResponse = await res.json();
+    const json = AlchemyNftsResponseSchema.parse(await res.json());
 
     for (const nft of json.data.ownedNfts) {
       if (nft.contract.isSpam) continue;

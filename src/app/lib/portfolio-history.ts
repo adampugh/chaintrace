@@ -1,4 +1,5 @@
 import { cacheLife } from "next/cache";
+import { z } from "zod";
 import type { Holding } from "./valuation";
 
 const MONTH_LABELS = [
@@ -16,7 +17,16 @@ const MONTH_LABELS = [
   "DEC",
 ];
 
-type HistoricalPricePoint = { value: string; timestamp: string };
+const HistoricalPricePointSchema = z.object({
+  value: z.string(),
+  timestamp: z.string(),
+});
+
+type HistoricalPricePoint = z.infer<typeof HistoricalPricePointSchema>;
+
+const HistoricalPricesResponseSchema = z.object({
+  data: z.array(HistoricalPricePointSchema).optional(),
+});
 
 async function getHistoricalPrices(
   tokenAddress: string | null,
@@ -52,8 +62,15 @@ async function getHistoricalPrices(
   // that holding as frozen (see below) rather than failing the whole chart.
   if (!res.ok) return [];
 
-  const json: { data: HistoricalPricePoint[] } = await res.json();
-  return json.data ?? [];
+  const parsed = HistoricalPricesResponseSchema.safeParse(await res.json());
+  if (!parsed.success) {
+    console.warn(
+      `getHistoricalPrices: unexpected response shape for ${tokenAddress ?? "ETH"}`,
+      parsed.error.message,
+    );
+    return [];
+  }
+  return parsed.data.data ?? [];
 }
 
 // Thinly-traded/spam tokens routinely show 10x+ price swings that reflect

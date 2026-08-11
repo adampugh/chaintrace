@@ -1,24 +1,33 @@
 import { cacheLife } from "next/cache";
+import { z } from "zod";
 
-export type AlchemyToken = {
-  address: string;
-  network: string;
-  tokenAddress: string | null;
-  tokenBalance: string;
-  tokenMetadata: {
-    decimals: number | null;
-    name: string | null;
-    symbol: string | null;
-  };
-  tokenPrices: { currency: string; value: string; lastUpdatedAt: string }[];
-};
+const AlchemyTokenSchema = z.object({
+  address: z.string(),
+  network: z.string(),
+  tokenAddress: z.string().nullable(),
+  tokenBalance: z.string(),
+  tokenMetadata: z.object({
+    decimals: z.number().nullable(),
+    name: z.string().nullable(),
+    symbol: z.string().nullable(),
+  }),
+  tokenPrices: z.array(
+    z.object({
+      currency: z.string(),
+      value: z.string(),
+      lastUpdatedAt: z.string(),
+    }),
+  ),
+});
 
-type AlchemyTokensResponse = {
-  data: {
-    tokens: AlchemyToken[];
-    pageKey: string | null;
-  };
-};
+export type AlchemyToken = z.infer<typeof AlchemyTokenSchema>;
+
+const AlchemyTokensResponseSchema = z.object({
+  data: z.object({
+    tokens: z.array(AlchemyTokenSchema),
+    pageKey: z.string().nullable(),
+  }),
+});
 
 export async function getWalletPortfolio(
   address: string,
@@ -50,7 +59,7 @@ export async function getWalletPortfolio(
 
     if (!res.ok) throw new Error(`Alchemy request failed: ${res.status}`);
 
-    const json: AlchemyTokensResponse = await res.json();
+    const json = AlchemyTokensResponseSchema.parse(await res.json());
     allTokens.push(...json.data.tokens);
     pageKey = json.data.pageKey;
     pageCount++;
